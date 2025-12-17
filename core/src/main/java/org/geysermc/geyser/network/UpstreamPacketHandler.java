@@ -313,14 +313,13 @@ public class UpstreamPacketHandler extends LoggingPacketHandler {
     }
 
     private boolean couldLoginUserByName(String bedrockUsername) {
-        if (geyser.config().savedUserLogins().contains(bedrockUsername)) {
-            String authChain = geyser.authChainFor(bedrockUsername);
-            if (authChain != null) {
-                geyser.getLogger().info(GeyserLocale.getLocaleStringLog("geyser.auth.stored_credentials", session.getAuthData().name()));
-                session.authenticateWithAuthChain(authChain);
-                return true;
-            }
+        String authChain = geyser.authChainFor(bedrockUsername);
+        if (authChain != null) {
+            geyser.getLogger().info(GeyserLocale.getLocaleStringLog("geyser.auth.stored_credentials", session.getAuthData().name()));
+            session.authenticateWithAuthChain(authChain);
+            return true;
         }
+
         PendingMicrosoftAuthentication.AuthenticationTask task = geyser.getPendingMicrosoftAuthentication().getTask(session.getAuthData().xuid());
         if (task != null) {
             return task.getAuthentication().isDone() && session.onMicrosoftLoginComplete(task);

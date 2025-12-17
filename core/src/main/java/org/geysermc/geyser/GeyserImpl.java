@@ -761,11 +761,6 @@ public class GeyserImpl implements GeyserApi, EventRegistrar {
     }
 
     public void saveAuthChain(@NonNull String bedrockName, @NonNull String authChain) {
-        if (!config().savedUserLogins().contains(bedrockName)) {
-            // Do not save this login
-            return;
-        }
-
         // We can safely overwrite old instances because MsaAuthenticationService#getLoginResponseFromRefreshToken
         // refreshes the token for us
         if (!Objects.equals(authChain, savedAuthChains.put(bedrockName, authChain))) {
